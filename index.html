@@ -1,33 +1,1206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Atom — Situs saya</title>
-  <style>
-    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding: 2rem; max-width: 800px; margin: auto; color: #111; background: #f9f9fb; }
-    header { margin-bottom: 1.5rem }
-    h1 { color: #0b5fff }
-    a.button { display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: #0b5fff; color: white; border-radius: 6px; text-decoration: none }
-    footer { margin-top: 2rem; color: #444 }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Halo dari repo Atom</h1>
-    <p>Selamat — halaman GitHub Pages Anda sekarang memiliki berkas index.html.</p>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Perkembangan Model Atom, Struktur Atom, dan Aplikasinya dalam Kehidupan
+    </title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  <main>
-    <p>Ini adalah halaman contoh. Anda bisa mengedit <code>index.html</code> di branch <code>main</code> untuk menyesuaikan konten.</p>
+      :root {
+        --primary: #2c3e50;
+        --secondary: #3498db;
+        --accent: #e74c3c;
+        --text: #333;
+        --text-light: #666;
+        --bg: #ffffff;
+        --bg-alt: #f8f9fa;
+        --border: #e0e0e0;
+        --success: #27ae60;
+      }
 
-    <p>Link ke repository: <a href="https://github.com/danhengil463-lang/Atom">danhengil463-lang/Atom</a></p>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text);
+        background: var(--bg);
+      }
 
-    <a class="button" href="https://github.com/danhengil463-lang/Atom">Buka repo di GitHub</a>
-  </main>
+      /* Navigation */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: var(--bg);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 1rem 0;
+      }
 
-  <footer>
-    <small>Dibuat otomatis oleh GitHub Copilot chat assistant.</small>
-  </footer>
-</body>
+      nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: var(--primary);
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: var(--secondary);
+      }
+
+      /* Hero Section */
+      #hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-align: center;
+        padding: 6rem 2rem 2rem;
+      }
+
+      .hero-content {
+        max-width: 800px;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        margin-bottom: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        font-size: clamp(1rem, 2.5vw, 1.3rem);
+        opacity: 0.95;
+        margin-bottom: 2rem;
+        font-weight: 300;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        background: white;
+        color: #667eea;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-top: 1rem;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Content Section */
+      #content {
+        padding: 4rem 2rem;
+        background: var(--bg-alt);
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        color: var(--primary);
+        margin-bottom: 3rem;
+      }
+
+      .carousel-container {
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .carousel-wrapper {
+        overflow: hidden;
+        position: relative;
+      }
+
+      .carousel-track {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .carousel-slide {
+        min-width: 100%;
+        padding: 3rem;
+      }
+
+      .slide-title {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid var(--secondary);
+      }
+
+      .slide-content {
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        line-height: 1.8;
+        color: var(--text);
+        max-width: 70ch;
+      }
+
+      .slide-content p {
+        margin-bottom: 1.2rem;
+      }
+
+      .slide-content h3 {
+        color: var(--secondary);
+        margin: 1.5rem 0 1rem;
+        font-size: 1.3rem;
+      }
+
+      .slide-content ol,
+      .slide-content ul {
+        margin-left: 1.5rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .slide-content li {
+        margin-bottom: 0.8rem;
+      }
+
+      .slide-content strong {
+        color: var(--primary);
+      }
+
+      .carousel-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 3rem;
+        background: var(--bg-alt);
+      }
+
+      .carousel-button {
+        background: var(--secondary);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s, transform 0.2s;
+      }
+
+      .carousel-button:hover:not(:disabled) {
+        background: var(--primary);
+        transform: scale(1.1);
+      }
+
+      .carousel-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      .carousel-indicators {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ccc;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.3s;
+      }
+
+      .indicator.active {
+        background: var(--secondary);
+        transform: scale(1.3);
+      }
+
+      .completion-section {
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .completion-message {
+        font-size: 1.5rem;
+        color: var(--success);
+        margin-bottom: 2rem;
+        font-weight: 600;
+      }
+
+      .complete-button {
+        padding: 1rem 3rem;
+        background: var(--success);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .complete-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(39, 174, 96, 0.4);
+      }
+
+      /* Evaluation Section */
+      #evaluation {
+        padding: 4rem 2rem;
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      .evaluation-container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .locked-message {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: var(--bg-alt);
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .locked-message h3 {
+        font-size: 1.8rem;
+        color: var(--text-light);
+        margin-bottom: 1rem;
+      }
+
+      .locked-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .quiz-container {
+        display: none;
+      }
+
+      .quiz-container.unlocked {
+        display: block;
+      }
+
+      .question-card {
+        background: white;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 3px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .question-number {
+        color: var(--secondary);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .question-text {
+        font-size: 1.2rem;
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+      }
+
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .option {
+        padding: 1rem 1.5rem;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: var(--bg);
+      }
+
+      .option:hover {
+        border-color: var(--secondary);
+        background: #f0f8ff;
+      }
+
+      .option.selected {
+        border-color: var(--secondary);
+        background: #e3f2fd;
+        font-weight: 600;
+      }
+
+      .option.correct {
+        border-color: var(--success);
+        background: #e8f5e9;
+      }
+
+      .option.incorrect {
+        border-color: var(--accent);
+        background: #ffebee;
+      }
+
+      .submit-button {
+        display: block;
+        margin: 3rem auto 0;
+        padding: 1rem 3rem;
+        background: var(--secondary);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .submit-button:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+      }
+
+      .submit-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .result-message {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 2rem;
+        background: var(--bg-alt);
+        border-radius: 15px;
+        display: none;
+      }
+
+      .result-message.show {
+        display: block;
+      }
+
+      .result-score {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--secondary);
+        margin-bottom: 1rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        nav ul {
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .carousel-slide {
+          padding: 2rem 1.5rem;
+        }
+
+        .carousel-controls {
+          padding: 1rem 1.5rem;
+        }
+
+        .slide-content {
+          max-width: 100%;
+        }
+
+        .question-card {
+          padding: 1.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        nav ul {
+          font-size: 0.9rem;
+        }
+
+        .carousel-button {
+          width: 40px;
+          height: 40px;
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav>
+      <ul>
+        <li><a href="#hero">Beranda</a></li>
+        <li><a href="#content">Materi</a></li>
+        <li><a href="#evaluation">Evaluasi</a></li>
+      </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+      <div class="hero-content">
+        <h1>
+          Perkembangan Model Atom, Struktur Atom, dan Aplikasinya dalam
+          Kehidupan
+        </h1>
+        <p class="subtitle">
+          Jelajahi perjalanan penemuan atom dari Dalton hingga mekanika kuantum,
+          dan pahami bagaimana konsep ini mengubah dunia modern
+        </p>
+        <a href="#content" class="cta-button">Mulai Membaca</a>
+      </div>
+    </section>
+
+    <!-- Content Section with Carousel -->
+    <section id="content">
+      <h2 class="section-title">Materi Pembelajaran</h2>
+      <div class="carousel-container">
+        <div class="carousel-wrapper">
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Slide 1: Landasan Teori - Pendahuluan -->
+            <div class="carousel-slide">
+              <h2 class="slide-title">Landasan Teori</h2>
+              <div class="slide-content">
+                <p>
+                  Perkembangan model atom dimulai dari gagasan awal
+                  <strong>John Dalton</strong> (sekitar 1803) yang menyatakan
+                  bahwa atom adalah partikel terkecil materi yang berbentuk bola
+                  pejal tak dapat dibagi lagi. Dalton beranggapan semua materi
+                  tersusun dari atom beridentik, dan perubahan kimia terjadi
+                  karena susunan ulang atom.
+                </p>
+
+                <p>
+                  Selanjutnya, <strong>J.J. Thomson</strong> (1904) menemukan
+                  elektron dan mengusulkan model atom "bola muatan positif
+                  dengan elektron tersebar" (plum-pudding).
+                </p>
+
+                <p>
+                  Setelah itu, <strong>Ernest Rutherford</strong> (1911)
+                  menunjukkan lewat percobaan hamburan sinar alfa bahwa atom
+                  memiliki inti kecil bermuatan positif dengan elektron
+                  mengorbit di sekitarnya.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 2: Model Atom Bohr dan Mekanika Kuantum -->
+            <div class="carousel-slide">
+              <h2 class="slide-title">Model Atom Modern</h2>
+              <div class="slide-content">
+                <p>
+                  <strong>Niels Bohr</strong> (1913) memperbaiki model
+                  Rutherford dengan menyatakan elektron hanya berada pada
+                  lintasan-lintasan tertentu berenergi tetap, dan elektron
+                  berpindah lintasan menyerap atau memancarkan energi.
+                </p>
+
+                <p>
+                  Akhirnya,
+                  <strong>model atom modern (mekanika kuantum)</strong>
+                  diperkenalkan oleh Schrödinger dan Heisenberg (1926), yang
+                  menggambarkan elektron sebagai gelombang probabilitas dalam
+                  orbital tertentu, bukan lintasan pasti.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 3: Rangkuman Model Atom -->
+            <div class="carousel-slide">
+              <h2 class="slide-title">Rangkuman Model-Model Atom</h2>
+              <div class="slide-content">
+                <ol>
+                  <li>
+                    <strong>Dalton (1803):</strong> Atom adalah bagian terkecil
+                    materi, pejal, tidak dapat dibagi.
+                  </li>
+
+                  <li>
+                    <strong>Thomson (1904):</strong> Atom berupa bola pejal
+                    bermuatan positif dengan elektron negatif tersebar di
+                    dalamnya.
+                  </li>
+
+                  <li>
+                    <strong>Rutherford (1911):</strong> Atom memiliki inti
+                    bermuatan positif yang sangat kecil, dan elektron
+                    mengelilingi inti seperti planet mengitari matahari.
+                  </li>
+
+                  <li>
+                    <strong>Bohr (1913):</strong> Elektron hanya boleh beredar
+                    pada lintasan berenergi tertentu; ketika elektron berpindah
+                    lintasan, energi diserap atau dipancarkan.
+                  </li>
+
+                  <li>
+                    <strong>Mekanika Kuantum (1926–sekarang):</strong> Elektron
+                    tidak lagi dianggap bergerak di lintasan tetap, tetapi
+                    berada dalam orbital (daerah probabilitas) di sekitar inti.
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- Slide 4: Struktur dan Partikel Penyusun Atom -->
+            <div class="carousel-slide">
+              <h2 class="slide-title">Struktur dan Partikel Penyusun Atom</h2>
+              <div class="slide-content">
+                <p>
+                  Atom terdiri atas <strong>inti atom (nukleus)</strong> dan
+                  <strong>elektron</strong> yang mengelilinginya. Inti atom
+                  mengandung partikel bermuatan positif (proton) dan netral
+                  (neutron), sedangkan elektron bermuatan negatif berada di
+                  sekitar inti.
+                </p>
+
+                <p><strong>Secara rinci:</strong></p>
+                <ul>
+                  <li>
+                    <strong>Proton:</strong> Partikel subatomik bermuatan
+                    positif di dalam inti atom.
+                  </li>
+                  <li>
+                    <strong>Elektron:</strong> Partikel subatomik bermuatan
+                    negatif yang beredar mengelilingi inti atom.
+                  </li>
+                  <li>
+                    <strong>Neutron:</strong> Partikel subatomik tidak bermuatan
+                    (netral) yang juga terletak di dalam inti atom.
+                  </li>
+                  <li>
+                    <strong>Nomor atom (Z):</strong> Jumlah proton dalam inti
+                    (menentukan jenis unsur).
+                  </li>
+                  <li>
+                    <strong>Nomor massa (A):</strong> Jumlah proton dan neutron
+                    dalam inti.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Slide 5: Aplikasi dalam Kedokteran Nuklir -->
+            <div class="carousel-slide">
+              <h2 class="slide-title">Aplikasi dalam Kedokteran Nuklir</h2>
+              <div class="slide-content">
+                <p>
+                  Kedokteran nuklir adalah cabang medis yang menggunakan isotop
+                  radioaktif dosis rendah untuk mendiagnosis dan mengobati
+                  penyakit.
+                </p>
+
+                <p>
+                  Dalam praktiknya, isotop radioaktif dimasukkan ke dalam tubuh
+                  pasien (misalnya melalui suntikan), kemudian memancarkan sinar
+                  gamma atau positron yang dideteksi dengan kamera khusus (PET
+                  atau SPECT). Gambar yang dihasilkan menunjukkan fungsi organ
+                  atau jaringan secara fungsional.
+                </p>
+
+                <p>
+                  Misalnya, isotop tertentu akan terkumpul di organ jantung atau
+                  ginjal, sehingga dokter dapat mengevaluasi kinerja organ
+                  tersebut.
+                </p>
+
+                <p>
+                  Selain diagnosis, kedokteran nuklir juga memungkinkan terapi
+                  terarah: misalnya, terapi radioiodin pada kanker tiroid yang
+                  menargetkan sel-sel kanker dengan radiasi hingga minimal
+                  merusak jaringan sehat.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 6: Aplikasi dalam Teknologi -->
+            <div class="carousel-slide">
+              <h2 class="slide-title">Aplikasi dalam Teknologi</h2>
+              <div class="slide-content">
+                <p>
+                  Perkembangan konsep atom dan fisika kuantum juga melahirkan
+                  banyak teknologi modern.
+                </p>
+
+                <p>
+                  Sebagai contoh,
+                  <strong>elektronik dan mikroelektronika</strong> (seperti
+                  komputer, telepon seluler, dan komponen semikonduktor)
+                  bergantung pada perilaku elektron dalam bahan kristal (doping
+                  atomiknya) untuk mengubah karakteristik listrik suatu bahan.
+                </p>
+
+                <p>
+                  <strong>Teknologi laser</strong> (yang digunakan dalam
+                  komunikasi optik dan perangkat medis) memanfaatkan transisi
+                  elektron antar tingkat energi.
+                </p>
+
+                <p>
+                  Meskipun tidak dijelaskan di atas, jam atom yang sangat akurat
+                  menggunakan perbedaan energi elektron pada atom tertentu.
+                </p>
+
+                <p>
+                  Di bidang energi, <strong>reaktor nuklir</strong> mengubah
+                  energi ikatan inti atom melalui fisi menjadi listrik.
+                  Pembangkit listrik tenaga nuklir (PLTN) menghasilkan listrik
+                  dalam jumlah besar dengan emisi karbon dioksida yang sangat
+                  rendah dibandingkan pembangkit konvensional.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 7: Aplikasi dalam Lingkungan -->
+            <div class="carousel-slide">
+              <h2 class="slide-title">Aplikasi dalam Lingkungan</h2>
+              <div class="slide-content">
+                <p>
+                  Dalam konteks lingkungan, aplikasi nuklir mencakup energi
+                  nuklir dan monitoring lingkungan.
+                </p>
+
+                <h3>Keuntungan Lingkungan:</h3>
+                <p>
+                  Energi nuklir dari PLTN menawarkan kelebihan lingkungan
+                  penting: karena proses fisi inti tidak membakar bahan bakar
+                  fosil, <strong>emisi karbon dioksida rendah</strong>. Dengan
+                  demikian, PLTN dapat mengurangi polusi udara global dan
+                  membantu penanggulangan perubahan iklim.
+                </p>
+
+                <h3>Tantangan Lingkungan:</h3>
+                <p>
+                  Namun, penggunaan nuklir juga menimbulkan tantangan
+                  lingkungan. Limbah radioaktif hasil reaktor memiliki masa
+                  aktif yang sangat lama (bisa ribuan tahun) sehingga memerlukan
+                  penyimpanan khusus dan aman. Belum ada solusi penyimpanan
+                  sempurna hingga kini, sehingga isu keamanan dan proteksi
+                  sangat penting.
+                </p>
+
+                <p>
+                  Selain itu, isotop radioaktif juga digunakan sebagai tracer
+                  untuk mengukur kualitas air atau mengamati pergerakan polutan
+                  di lingkungan, serta penanggalan karbon-14 untuk menentukan
+                  usia fosil atau artefak.
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 8: Completion -->
+            <div class="carousel-slide">
+              <div class="completion-section">
+                <div class="completion-message">
+                  ✓ Anda telah mencapai akhir materi
+                </div>
+                <p
+                  style="
+                    margin-bottom: 2rem;
+                    color: var(--text-light);
+                    font-size: 1.1rem;
+                  "
+                >
+                  Selamat! Anda telah menyelesaikan seluruh materi tentang
+                  Perkembangan Model Atom. Klik tombol di bawah untuk
+                  melanjutkan ke sesi evaluasi.
+                </p>
+                <button class="complete-button" id="completeButton">
+                  Saya Sudah Selesai Membaca
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-controls">
+          <button class="carousel-button" id="prevButton">‹</button>
+          <div class="carousel-indicators" id="indicators"></div>
+          <button class="carousel-button" id="nextButton">›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Evaluation Section -->
+    <section id="evaluation">
+      <h2 class="section-title">Evaluasi Pembelajaran</h2>
+      <div class="evaluation-container">
+        <!-- Locked State -->
+        <div class="locked-message" id="lockedMessage">
+          <div class="locked-icon">🔒</div>
+          <h3>Sesi Evaluasi Terkunci</h3>
+          <p>
+            Silakan selesaikan membaca seluruh materi terlebih dahulu untuk
+            membuka sesi evaluasi.
+          </p>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quizContainer">
+          <!-- Question 1 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 1 dari 10</div>
+            <div class="question-text">
+              Siapakah ilmuwan yang pertama kali mengembangkan teori atom
+              modern?
+            </div>
+            <div class="options">
+              <div class="option" data-question="1" data-answer="A">
+                A. John Dalton
+              </div>
+              <div class="option" data-question="1" data-answer="B">
+                B. J. J. Thomson
+              </div>
+              <div class="option" data-question="1" data-answer="C">
+                C. Ernest Rutherford
+              </div>
+              <div class="option" data-question="1" data-answer="D">
+                D. Niels Bohr
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 2 dari 10</div>
+            <div class="question-text">
+              Menurut model atom Thomson, atom digambarkan sebagai:
+            </div>
+            <div class="options">
+              <div class="option" data-question="2" data-answer="A">
+                A. Bola pejal bermuatan positif dengan elektron tersebar di
+                dalamnya.
+              </div>
+              <div class="option" data-question="2" data-answer="B">
+                B. Inti atom bermuatan negatif dengan elektron beredar
+                mengelilinginya.
+              </div>
+              <div class="option" data-question="2" data-answer="C">
+                C. Inti atom positif dengan elektron menyerap energi.
+              </div>
+              <div class="option" data-question="2" data-answer="D">
+                D. Awan elektron tanpa inti yang bermuatan.
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 3 dari 10</div>
+            <div class="question-text">
+              Dalam model atom Rutherford, inti atom memiliki muatan:
+            </div>
+            <div class="options">
+              <div class="option" data-question="3" data-answer="A">
+                A. Positif
+              </div>
+              <div class="option" data-question="3" data-answer="B">
+                B. Negatif
+              </div>
+              <div class="option" data-question="3" data-answer="C">
+                C. Netral
+              </div>
+              <div class="option" data-question="3" data-answer="D">
+                D. Bervariasi bergantung unsur
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 4 dari 10</div>
+            <div class="question-text">
+              Menurut model atom Bohr, ketika elektron berpindah ke lintasan
+              energi yang lebih tinggi, elektron akan:
+            </div>
+            <div class="options">
+              <div class="option" data-question="4" data-answer="A">
+                A. Menyerap energi
+              </div>
+              <div class="option" data-question="4" data-answer="B">
+                B. Memancarkan energi
+              </div>
+              <div class="option" data-question="4" data-answer="C">
+                C. Menghasilkan partikel baru
+              </div>
+              <div class="option" data-question="4" data-answer="D">
+                D. Melepaskan neutron
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 5 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 5 dari 10</div>
+            <div class="question-text">
+              Urutan muatan partikel berikut (proton, neutron, elektron) secara
+              berurutan adalah:
+            </div>
+            <div class="options">
+              <div class="option" data-question="5" data-answer="A">
+                A. +1, 0, -1
+              </div>
+              <div class="option" data-question="5" data-answer="B">
+                B. -1, +1, 0
+              </div>
+              <div class="option" data-question="5" data-answer="C">
+                C. 0, +1, -1
+              </div>
+              <div class="option" data-question="5" data-answer="D">
+                D. +1, -1, 0
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 6 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 6 dari 10</div>
+            <div class="question-text">
+              Isotop radioaktif dalam kedokteran nuklir digunakan terutama
+              untuk:
+            </div>
+            <div class="options">
+              <div class="option" data-question="6" data-answer="A">
+                A. Mendiagnosis dan mengobati penyakit dengan pencitraan organ.
+              </div>
+              <div class="option" data-question="6" data-answer="B">
+                B. Menyimpan data digital secara magnetik.
+              </div>
+              <div class="option" data-question="6" data-answer="C">
+                C. Menghasilkan energi listrik untuk rumah sakit.
+              </div>
+              <div class="option" data-question="6" data-answer="D">
+                D. Sterilisasi udara di ruang operasi.
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 7 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 7 dari 10</div>
+            <div class="question-text">
+              Salah satu keuntungan pembangkit listrik tenaga nuklir (PLTN)
+              dibandingkan pembangkit batubara adalah:
+            </div>
+            <div class="options">
+              <div class="option" data-question="7" data-answer="A">
+                A. Emisi karbon dioksida sangat rendah selama operasi.
+              </div>
+              <div class="option" data-question="7" data-answer="B">
+                B. Harga pembangunan yang lebih rendah daripada turbin gas.
+              </div>
+              <div class="option" data-question="7" data-answer="C">
+                C. Limbah radioaktif mudah diurai secara alami.
+              </div>
+              <div class="option" data-question="7" data-answer="D">
+                D. Tidak bergantung pada isotop atom.
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 8 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 8 dari 10</div>
+            <div class="question-text">
+              Perbedaan utama antara model atom Bohr dan model atom mekanika
+              kuantum adalah:
+            </div>
+            <div class="options">
+              <div class="option" data-question="8" data-answer="A">
+                A. Model Bohr menggambarkan elektron pada lintasan tetap,
+                sedangkan mekanika kuantum menggambarkan elektron dalam orbital
+                probabilitas.
+              </div>
+              <div class="option" data-question="8" data-answer="B">
+                B. Model Bohr tidak menjelaskan spektrum atom, sedangkan
+                mekanika kuantum menjelaskannya.
+              </div>
+              <div class="option" data-question="8" data-answer="C">
+                C. Model Bohr menganggap elektron sebagai partikel, sedangkan
+                mekanika kuantum hanya sebagai gelombang.
+              </div>
+              <div class="option" data-question="8" data-answer="D">
+                D. Model Bohr berlaku untuk semua atom, sedangkan mekanika
+                kuantum hanya untuk atom hidrogen.
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 9 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 9 dari 10</div>
+            <div class="question-text">
+              Manakah yang BUKAN merupakan partikel penyusun inti atom?
+            </div>
+            <div class="options">
+              <div class="option" data-question="9" data-answer="A">
+                A. Proton
+              </div>
+              <div class="option" data-question="9" data-answer="B">
+                B. Neutron
+              </div>
+              <div class="option" data-question="9" data-answer="C">
+                C. Elektron
+              </div>
+              <div class="option" data-question="9" data-answer="D">
+                D. Nukleon
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 10 -->
+          <div class="question-card">
+            <div class="question-number">Pertanyaan 10 dari 10</div>
+            <div class="question-text">
+              Teknologi laser memanfaatkan prinsip atom yaitu:
+            </div>
+            <div class="options">
+              <div class="option" data-question="10" data-answer="A">
+                A. Transisi elektron antar tingkat energi yang memancarkan
+                foton.
+              </div>
+              <div class="option" data-question="10" data-answer="B">
+                B. Fisi inti atom yang menghasilkan energi besar.
+              </div>
+              <div class="option" data-question="10" data-answer="C">
+                C. Peluruhan radioaktif isotop.
+              </div>
+              <div class="option" data-question="10" data-answer="D">
+                D. Reaksi fusi atom hidrogen.
+              </div>
+            </div>
+          </div>
+
+          <button class="submit-button" id="submitButton" disabled>
+            Kirim Jawaban
+          </button>
+
+          <div class="result-message" id="resultMessage">
+            <div class="result-score" id="resultScore"></div>
+            <p id="resultText"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Carousel functionality
+      const track = document.getElementById("carouselTrack");
+      const slides = document.querySelectorAll(".carousel-slide");
+      const prevButton = document.getElementById("prevButton");
+      const nextButton = document.getElementById("nextButton");
+      const indicatorsContainer = document.getElementById("indicators");
+      const completeButton = document.getElementById("completeButton");
+
+      let currentSlide = 0;
+      const totalSlides = slides.length;
+
+      // Create indicators
+      for (let i = 0; i < totalSlides; i++) {
+        const indicator = document.createElement("button");
+        indicator.classList.add("indicator");
+        indicator.addEventListener("click", () => goToSlide(i));
+        indicatorsContainer.appendChild(indicator);
+      }
+
+      const indicators = document.querySelectorAll(".indicator");
+
+      function updateCarousel() {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+          indicator.classList.toggle("active", index === currentSlide);
+        });
+
+        // Update buttons
+        prevButton.disabled = currentSlide === 0;
+        nextButton.disabled = currentSlide === totalSlides - 1;
+      }
+
+      function goToSlide(n) {
+        currentSlide = n;
+        updateCarousel();
+      }
+
+      prevButton.addEventListener("click", () => {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateCarousel();
+        }
+      });
+
+      nextButton.addEventListener("click", () => {
+        if (currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateCarousel();
+        }
+      });
+
+      // Touch events for mobile swipe
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      track.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      track.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50 && currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateCarousel();
+        }
+        if (touchEndX > touchStartX + 50 && currentSlide > 0) {
+          currentSlide--;
+          updateCarousel();
+        }
+      }
+
+      // Initialize carousel
+      updateCarousel();
+
+      // Complete button functionality
+      completeButton.addEventListener("click", () => {
+        unlockEvaluation();
+      });
+
+      // Quiz functionality
+      const lockedMessage = document.getElementById("lockedMessage");
+      const quizContainer = document.getElementById("quizContainer");
+      const submitButton = document.getElementById("submitButton");
+      const resultMessage = document.getElementById("resultMessage");
+      const resultScore = document.getElementById("resultScore");
+      const resultText = document.getElementById("resultText");
+
+      const answers = {
+        1: "A",
+        2: "A",
+        3: "A",
+        4: "A",
+        5: "A",
+        6: "A",
+        7: "A",
+        8: "A",
+        9: "C",
+        10: "A",
+      };
+
+      let selectedAnswers = {};
+
+      function unlockEvaluation() {
+        lockedMessage.style.display = "none";
+        quizContainer.classList.add("unlocked");
+        document
+          .getElementById("evaluation")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Option selection
+      document.querySelectorAll(".option").forEach((option) => {
+        option.addEventListener("click", function () {
+          const question = this.getAttribute("data-question");
+          const answer = this.getAttribute("data-answer");
+
+          // Remove selection from other options in same question
+          document
+            .querySelectorAll(`[data-question="${question}"]`)
+            .forEach((opt) => {
+              opt.classList.remove("selected");
+            });
+
+          // Add selection to clicked option
+          this.classList.add("selected");
+          selectedAnswers[question] = answer;
+
+          // Enable submit button if all questions answered
+          if (Object.keys(selectedAnswers).length === 10) {
+            submitButton.disabled = false;
+          }
+        });
+      });
+
+      // Submit quiz
+      submitButton.addEventListener("click", () => {
+        let correct = 0;
+
+        for (let q = 1; q <= 10; q++) {
+          const selected = selectedAnswers[q];
+          const correctAnswer = answers[q];
+
+          document
+            .querySelectorAll(`[data-question="${q}"]`)
+            .forEach((option) => {
+              const optAnswer = option.getAttribute("data-answer");
+
+              if (optAnswer === correctAnswer) {
+                option.classList.add("correct");
+              } else if (optAnswer === selected && selected !== correctAnswer) {
+                option.classList.add("incorrect");
+              }
+
+              option.style.pointerEvents = "none";
+            });
+
+          if (selected === correctAnswer) {
+            correct++;
+          }
+        }
+
+        const percentage = ((correct / 10) * 100).toFixed(0);
+        resultScore.textContent = `${correct}/10`;
+        resultText.textContent = `Anda menjawab ${correct} dari 10 pertanyaan dengan benar (${percentage}%).`;
+
+        if (percentage >= 80) {
+          resultText.textContent += " Luar biasa! Pemahaman Anda sangat baik.";
+        } else if (percentage >= 60) {
+          resultText.textContent += " Bagus! Terus tingkatkan pemahaman Anda.";
+        } else {
+          resultText.textContent +=
+            " Silakan pelajari kembali materi untuk pemahaman yang lebih baik.";
+        }
+
+        resultMessage.classList.add("show");
+        submitButton.style.display = "none";
+      });
+
+      // Smooth scrolling for navigation
+      document.querySelectorAll("nav a").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          target.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
 </html>
